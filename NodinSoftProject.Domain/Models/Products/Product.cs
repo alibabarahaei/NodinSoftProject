@@ -28,7 +28,7 @@ namespace NodinSoftProject.Domain.Models.Products
         public DateTime ProduceDate { get; set; } = DateTime.Now;
 
 
-        public bool IsAvailable { get; set; } 
+        public bool IsAvailable { get; set; } = true;
 
         #region relations
 

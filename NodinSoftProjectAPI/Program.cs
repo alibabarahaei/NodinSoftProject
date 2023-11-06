@@ -1,11 +1,15 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using NodinSoftProject.Application.InterfaceService;
 using NodinSoftProject.Application.Security.Identity;
+using NodinSoftProject.Application.Services;
 using NodinSoftProject.Domain.InterfaceRepositories.Base;
 using NodinSoftProject.Domain.Models.User;
 using NodinSoftProject.Infrastructure.EFcore.Context;
 using NodinSoftProject.Infrastructure.EFcore.Repository;
+using System.Text.Encodings.Web;
+using System.Text.Unicode;
 using Westwind.AspNetCore.LiveReload;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -27,6 +31,16 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
+
+
+#region Services
+
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+builder.Services.AddScoped<IUserService, UserService>();
+//builder.Services.AddScoped<IProductService, ProductService>();
+
+
+#endregion
 
 
 
@@ -56,12 +70,6 @@ builder.Services.ConfigureApplicationCookie(options =>
 });
 
 #endregion
-
-
-#region Services
-builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-#endregion
-
 
 
 
