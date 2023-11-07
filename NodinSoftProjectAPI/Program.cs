@@ -1,6 +1,7 @@
-using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using NodinSoftProject.Application.InterfaceService;
 using NodinSoftProject.Application.Security.Identity;
 using NodinSoftProject.Application.Services;
@@ -8,8 +9,8 @@ using NodinSoftProject.Domain.InterfaceRepositories.Base;
 using NodinSoftProject.Domain.Models.User;
 using NodinSoftProject.Infrastructure.EFcore.Context;
 using NodinSoftProject.Infrastructure.EFcore.Repository;
-using System.Text.Encodings.Web;
-using System.Text.Unicode;
+using NodinSoftProjectAPI.Models;
+using System.Text;
 using Westwind.AspNetCore.LiveReload;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,7 +19,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddLiveReload();
 
-var configurationSection = builder.Configuration;
+builder.Services.AddAutoMapper(typeof(Program).Assembly);
+
 
 
 // Add services to the container.
@@ -38,36 +40,60 @@ builder.Services.AddAutoMapper(typeof(Program).Assembly);
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IProductService, ProductService>();
-
-
 #endregion
-
 
 
 #region Config Identity
-builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
-    {
-        options.Password.RequireNonAlphanumeric = false;
-        options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
-        options.SignIn.RequireConfirmedEmail = true;
-    })
+
+
+
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<NodinSoftProjectDBContext>()
-    .AddDefaultTokenProviders()
-    .AddErrorDescriber<PersianIdentityErrorDescriber>();
+    .AddErrorDescriber<PersianIdentityErrorDescriber>(); ;
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    options.Password.RequireDigit = false;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireUppercase = false;
+
+});
 #endregion
+
+
+
+
+var jwtSettings = builder.Configuration.GetSection("JwtSettings");
+builder.Services.AddAuthentication(opt =>
+{
+    opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = false,
+        ValidateAudience = false,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = jwtSettings.GetSection("validIssuer").Value,
+        ValidAudience = jwtSettings.GetSection("validAudience").Value,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.GetSection("securityKey").Value))
+    };
+});
+
 
 #region ConfigCookie
 
-builder.Services.ConfigureApplicationCookie(options =>
-{
-    options.ExpireTimeSpan = TimeSpan.FromDays(10);
-    options.AccessDeniedPath = configurationSection.GetSection("Route:AccessDenied").Value;
-    options.Cookie.Name = configurationSection.GetSection("Cookie:Name").Value;
-    options.Cookie.HttpOnly = true;
-    options.LoginPath = configurationSection.GetSection("Route:Login").Value;
-    options.ReturnUrlParameter = CookieAuthenticationDefaults.ReturnUrlParameter;
-    options.SlidingExpiration = true;
-});
+//builder.Services.ConfigureApplicationCookie(options =>
+//{
+//    options.ExpireTimeSpan = TimeSpan.FromDays(10);
+//    options.AccessDeniedPath = configurationSection.GetSection("Route:AccessDenied").Value;
+//    options.Cookie.Name = configurationSection.GetSection("Cookie:Name").Value;
+//    options.Cookie.HttpOnly = true;
+//    options.LoginPath = configurationSection.GetSection("Route:Login").Value;
+//    options.ReturnUrlParameter = CookieAuthenticationDefaults.ReturnUrlParameter;
+//    options.SlidingExpiration = true;
+//});
 
 #endregion
 

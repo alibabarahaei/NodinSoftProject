@@ -1,5 +1,8 @@
+using Microsoft.AspNetCore.Authorization;
+
 namespace NodinSoftProjectAPI
 {
+   
     public class WeatherForecast
     {
         public DateOnly Date { get; set; }

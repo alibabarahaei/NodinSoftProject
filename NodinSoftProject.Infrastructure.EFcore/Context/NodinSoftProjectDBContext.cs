@@ -23,6 +23,13 @@ namespace NodinSoftProject.Infrastructure.EFcore.Context
             }
 
             base.OnModelCreating(modelBuilder);
+
+
+            modelBuilder.ApplyConfiguration(new RoleConfiguration());
+            modelBuilder.Entity<IdentityUserRole<string>>().HasKey(p => new { p.UserId, p.RoleId });
+
+
+
             #region ChangeTableName(Identity)
             modelBuilder.Entity<ApplicationUser>().ToTable("Users").Property(p => p.Id).HasColumnName("UserId");
             modelBuilder.Entity<IdentityUserRole<string>>().ToTable("UserRoles");

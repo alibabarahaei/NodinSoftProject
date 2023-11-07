@@ -1,7 +1,9 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace NodinSoftProjectAPI.Controllers
 {
+    [Authorize(Roles = "Visitor")]
     [ApiController]
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase
