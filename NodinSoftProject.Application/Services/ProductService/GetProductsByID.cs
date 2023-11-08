@@ -1,0 +1,63 @@
+﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
+using NodinSoftProject.Application.InterfaceService;
+using NodinSoftProject.Domain.InterfaceRepositories.Base;
+using NodinSoftProject.Domain.Models.Products;
+using ProductResult = NodinSoftProject.Application.DTOs.Product.ProductResult;
+
+namespace NodinSoftProject.Application.Services.ProductService
+{
+    public class GetProductsByID
+    {
+
+        public class Query : IRequest<Response>
+        {
+            public string UserId { get; set; }
+
+        }
+
+        public class Handler : IRequestHandler<Query, Response>
+        {
+
+
+
+            private readonly IUserService _userService;
+            private readonly IGenericRepository<Product> _productRepository;
+
+            public Handler(IUserService userService, IGenericRepository<Product> productRepository)
+            {
+                _userService = userService;
+                _productRepository = productRepository;
+            }
+
+
+            public async Task<Response> Handle(Query request, CancellationToken cancellationToken)
+            {
+                var products = _productRepository.GetQuery().Include("User").Where(p => (p.User.Id == request.UserId)).ToList();
+                if (products != null)
+                {
+                    return new Response()
+                    {
+                        Products = products,
+                        ProductResult = ProductResult.Success
+                    };
+                }
+
+                return new Response()
+                {
+                    Products = null,
+                    ProductResult = ProductResult.Error
+                };
+            }
+        }
+
+        public class Response
+        {
+            public ProductResult ProductResult { get; set; }
+            public List<Product> Products { get; set; }
+
+        }
+
+
+    }
+}

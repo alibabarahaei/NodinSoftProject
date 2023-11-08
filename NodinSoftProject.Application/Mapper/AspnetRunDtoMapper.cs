@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using NodinSoftProject.Application.DTOs.Account;
 using NodinSoftProject.Application.DTOs.Product;
+using NodinSoftProject.Application.Services.ProductService;
 using NodinSoftProject.Domain.Models.Products;
 using NodinSoftProject.Domain.Models.User;
 
@@ -26,9 +27,9 @@ namespace NodinSoftProject.Application.Mapper
     {
         public AspnetRunDtoMapper()
         {
-            CreateMap<Product, AddProductDTO>().ReverseMap();
+            CreateMap<Product, CreateProduct.Command>().ReverseMap();
             CreateMap<ApplicationUser, RegisterUserDTO>().ReverseMap();
-            CreateMap<Product, EditProductDTO>().ReverseMap();
+            CreateMap<Product, UpdateProduct.Command>().ReverseMap();
             CreateMap<ApplicationUser, EditProfileDTO>().ReverseMap();
         }
     }
