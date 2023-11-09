@@ -5,11 +5,11 @@ using Microsoft.IdentityModel.Tokens;
 using NodinSoftProject.Application.InterfaceService;
 using NodinSoftProject.Application.Security.Identity;
 using NodinSoftProject.Application.Services;
+using NodinSoftProject.Application.Services.ProductService;
 using NodinSoftProject.Domain.InterfaceRepositories.Base;
 using NodinSoftProject.Domain.Models.User;
 using NodinSoftProject.Infrastructure.EFcore.Context;
 using NodinSoftProject.Infrastructure.EFcore.Repository;
-using NodinSoftProjectAPI.Models;
 using System.Reflection;
 using System.Text;
 using Westwind.AspNetCore.LiveReload;
@@ -20,8 +20,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddLiveReload();
 
-builder.Services.AddAutoMapper(typeof(Program).Assembly);
-
 
 
 // Add services to the container.
@@ -30,7 +28,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+builder.Services.AddMediatR(cfg=>cfg.RegisterServicesFromAssembly(typeof(CreateProduct.Handler).GetTypeInfo().Assembly));
 
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 

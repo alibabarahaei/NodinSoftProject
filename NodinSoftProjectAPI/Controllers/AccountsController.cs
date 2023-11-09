@@ -1,14 +1,12 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using NodinSoftProject.Domain.Models.User;
 using NodinSoftProjectAPI.Models;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using NodinSoftProject.Domain.Models.User;
 
 namespace NodinSoftProjectAPI.Controllers
 {
@@ -25,12 +23,7 @@ namespace NodinSoftProjectAPI.Controllers
             _jwtSettings = configuration.GetSection("JwtSettings");
         }
 
-        [Authorize(Roles = "Visitor")]
-        [HttpGet("Test")]
-        public String Test()
-        {
-            return "accounts controller";
-        }
+        
 
         [HttpPost("Register")]
         public async Task<ActionResult> Register(UserRegistrationModel userModel)
@@ -55,7 +48,7 @@ namespace NodinSoftProjectAPI.Controllers
             if (user != null && await _userManager.CheckPasswordAsync(user, userModel.Password))
             {
                 var signingCredentials = GetSigningCredentials();
-                var claims = GetClaims(user);
+                var claims =  GetClaims(user);
                 var tokenOptions = GenerateTokenOptions(signingCredentials, await claims);
                 var token = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
                 return Ok(token);
