@@ -14,6 +14,8 @@ namespace NodinSoftProjectAPI.Mapper
             CreateMap<CreateProduct.Command, CreateProductModel>().ReverseMap();
             CreateMap<UpdateProduct.Command, UpdateProductModel>().ReverseMap();
             CreateMap<DeleteProduct.Command, DeleteProductModel>().ReverseMap();
+            CreateMap<RegisterUserDTO, UserRegistrationModel>().ReverseMap();
+            CreateMap<DeleteProduct.Command, DeleteProductModel>().ReverseMap();
         }
     }
 }

@@ -90,9 +90,8 @@ namespace NodinSoftProjectAPI.Controllers
 
 
 
-
-        [HttpGet("GetProductsByID")]
-        public async Task<IActionResult> GetProductsByID()
+        [HttpGet("GetProductsByUser")]
+        public async Task<IActionResult> GetProductsByUser()
         {
             if (User.GetEmail() != null)
             {
@@ -106,7 +105,7 @@ namespace NodinSoftProjectAPI.Controllers
 
                     if (result.OperationResult == OperationResult.Success)
                     {
-                        return Ok(result.Products);
+                        return Ok(result.Products[0]);
                     }
 
                     return Ok(result.OperationResult);
@@ -123,7 +122,6 @@ namespace NodinSoftProjectAPI.Controllers
 
 
 
-
         [HttpPatch("UpdateProduct")]
         public async Task<IActionResult> UpdateProduct(UpdateProductModel updateProductModel)
         {
@@ -132,6 +130,7 @@ namespace NodinSoftProjectAPI.Controllers
                 try
                 {
                     var updateProductCommand = _mapper.Map<UpdateProduct.Command>(updateProductModel);
+                    updateProductCommand.EmailUser = User.GetEmail();
                     var result = await _mediator.Send(updateProductCommand);
                     return Ok(result);
                 }

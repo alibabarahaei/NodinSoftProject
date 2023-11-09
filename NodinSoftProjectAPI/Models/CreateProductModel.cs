@@ -2,9 +2,9 @@
 {
     public class CreateProductModel
     {
-        public string UserId { get; set; }
+   
 
-        public string Name { get; set; }
+        public string ProductName { get; set; }
 
         public string ManufactureEmail { get; set; }
 

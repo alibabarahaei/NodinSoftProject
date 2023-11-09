@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using NodinSoftProject.Domain.Models.Products;
+using System.ComponentModel.DataAnnotations;
 
 namespace NodinSoftProject.Domain.Models.User
 {

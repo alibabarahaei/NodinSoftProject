@@ -31,7 +31,7 @@ namespace NodinSoftProject.Application.Services.ProductService
 
             public async Task<Response> Handle(Query request, CancellationToken cancellationToken)
             {
-                var products = _productRepository.GetQuery().ToList();
+                var products = _productRepository.GetQuery().Where(p=>p.IsAvailable==true).ToList();
                 if (products != null)
                 {
                     return new Response()

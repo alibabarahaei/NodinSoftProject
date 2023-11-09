@@ -10,12 +10,15 @@ namespace NodinSoftProject.Application.Services
         #region constructor
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public UserService(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+        public UserService(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _roleManager = roleManager;
         }
+
         #endregion
 
 
@@ -119,8 +122,19 @@ namespace NodinSoftProject.Application.Services
 
         public async Task AddRoleWithEmailUserAsync(AddRoleWithEmailUserDTO addRoleWithEmailUserDTO)
         {
+            IdentityResult roleResult;
+            bool adminRoleExists = await _roleManager.RoleExistsAsync(addRoleWithEmailUserDTO.Role);
+            if (!adminRoleExists)
+            {
+                roleResult = await _roleManager.CreateAsync(new IdentityRole(addRoleWithEmailUserDTO.Role));
+            }
+
+            // Select the user, and then add the admin role to the user
             var user = await GetUserWithEmailAsync(addRoleWithEmailUserDTO.EmailUser);
-            await _userManager.AddToRoleAsync(user, addRoleWithEmailUserDTO.Role);
+            if (!await _userManager.IsInRoleAsync(user, addRoleWithEmailUserDTO.Role))
+            {
+                var userResult = await _userManager.AddToRoleAsync(user, addRoleWithEmailUserDTO.Role);
+            }
         }
 
         public async Task<bool> CheckUserWithEmailAsync(CheckUserWithEmailDTO checkUserWithEmailDTO)
@@ -131,8 +145,9 @@ namespace NodinSoftProject.Application.Services
 
         public async Task<IList<string>> GetRolesWithEmailAsync(string email)
         {
-            var user = await _userManager.GetRolesAsync(email);
-            return user;
+            var user = await GetUserWithEmailAsync(email);
+            var listRoles = await _userManager.GetRolesAsync(user);
+            return listRoles;
         }
 
 

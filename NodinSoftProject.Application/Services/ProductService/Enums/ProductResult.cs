@@ -8,7 +8,7 @@ namespace NodinSoftProject.Application.Services.ProductService.Enums
 {
     public enum OperationResult
     {
-        Success,
-        Error
+        Error,
+        Success
     }
 }

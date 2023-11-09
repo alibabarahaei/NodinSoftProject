@@ -17,13 +17,13 @@ namespace NodinSoftProject.Application.Services.ProductService
 
             public long ProductId { get; set; }
 
-            public string Name { get; set; }
+            public string ProductName { get; set; }
 
             public string ManufactureEmail { get; set; }
 
             public string ManufacturePhone { get; set; }
 
-            public bool IsAvailable { get; set; }
+            public bool IsAvailable { get; set; } = true;
 
         }
 
@@ -45,15 +45,23 @@ namespace NodinSoftProject.Application.Services.ProductService
             public async Task<Response> Handle(Command request, CancellationToken cancellationToken)
             {
                 var currentProduct = await _productRepository.GetEntityById(request.ProductId);
-                currentProduct.Name = request.Name;
-                currentProduct.ManufacturePhone = request.ManufacturePhone;
-                currentProduct.ManufactureEmail = request.ManufactureEmail;
-                currentProduct.IsAvailable = request.IsAvailable;
-                _productRepository.EditEntity(currentProduct);
-                await _productRepository.SaveChanges();
+                if (currentProduct != null)
+                {
+                    currentProduct.Name = request.ProductName;
+                    currentProduct.ManufacturePhone = request.ManufacturePhone;
+                    currentProduct.ManufactureEmail = request.ManufactureEmail;
+                    currentProduct.IsAvailable = request.IsAvailable;
+                    _productRepository.EditEntity(currentProduct);
+                    await _productRepository.SaveChanges();
+                    return new Response()
+                    {
+                        OperationResult = OperationResult.Success
+                    };
+
+                }
                 return new Response()
                 {
-                    OperationResult = OperationResult.Success
+                    OperationResult = OperationResult.Error
                 };
             }
         }

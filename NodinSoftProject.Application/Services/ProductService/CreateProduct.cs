@@ -14,7 +14,7 @@ namespace NodinSoftProject.Application.Services.ProductService
         {
             public string EmailUser { get; set; }
 
-            public string Name { get; set; }
+            public string ProductName { get; set; }
 
             public string ManufactureEmail { get; set; }
 
@@ -40,6 +40,7 @@ namespace NodinSoftProject.Application.Services.ProductService
             public async Task<Response> Handle(Command request, CancellationToken cancellationToken)
             {
                 var newProduct = ObjectMapper.Mapper.Map<Product>(request);
+                newProduct.Name = request.ProductName;
                 var user = await _userService.GetUserWithEmailAsync(request.EmailUser);
                 newProduct.User = user;
                 await _productRepository.AddEntity(newProduct);

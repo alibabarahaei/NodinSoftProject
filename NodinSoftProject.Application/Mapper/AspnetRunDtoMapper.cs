@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using NodinSoftProject.Application.DTOs.Account;
-using NodinSoftProject.Application.DTOs.Product;
 using NodinSoftProject.Application.Services.ProductService;
 using NodinSoftProject.Domain.Models.Products;
 using NodinSoftProject.Domain.Models.User;

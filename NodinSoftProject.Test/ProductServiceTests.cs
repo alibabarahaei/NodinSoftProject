@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using Moq;
-using NodinSoftProject.Application.DTOs.Product;
 using NodinSoftProject.Application.InterfaceService;
 using NodinSoftProject.Application.Services.ProductService;
 using NodinSoftProject.Application.Services.ProductService.Enums;

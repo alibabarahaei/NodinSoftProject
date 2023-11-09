@@ -4,7 +4,7 @@ using NodinSoftProject.Application.InterfaceService;
 using NodinSoftProject.Application.Services.ProductService.Enums;
 using NodinSoftProject.Domain.InterfaceRepositories.Base;
 using NodinSoftProject.Domain.Models.Products;
-using ProductResult = NodinSoftProject.Application.DTOs.Product.ProductResult;
+
 
 namespace NodinSoftProject.Application.Services.ProductService
 {
@@ -34,7 +34,7 @@ namespace NodinSoftProject.Application.Services.ProductService
 
             public async Task<Response> Handle(Query request, CancellationToken cancellationToken)
             {
-                var products = _productRepository.GetQuery().Include("User").Where(p => (p.User.Email == request.EmailUser)).ToList();
+                var products = _productRepository.GetQuery().Where(p => (p.User.Email == request.EmailUser&&p.IsAvailable==true)).ToList();
                 if (products != null)
                 {
                     return new Response()
