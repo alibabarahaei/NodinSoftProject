@@ -17,7 +17,7 @@ namespace NodinSoftProject.Application.Services.ProductService
         {
             public long ProductId { get; set; }
 
-            public string UserId { get; set; }
+            public string EmailUser { get; set; }
 
         }
 
@@ -42,7 +42,7 @@ namespace NodinSoftProject.Application.Services.ProductService
             {
                 var product = await _productRepository.GetQuery().Include(p => p.User).FirstOrDefaultAsync();
 
-                if (product != null && product.User.Id == request.UserId)
+                if (product != null && product.User.Email == request.EmailUser)
                 {
                     product.IsAvailable = false;
                     var result = await _mediator.Send(ObjectMapper.Mapper.Map<UpdateProduct.Command>(product));

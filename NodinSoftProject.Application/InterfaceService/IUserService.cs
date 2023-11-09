@@ -33,6 +33,12 @@ namespace NodinSoftProject.Application.InterfaceService
 
         Task<IdentityResult> ConfirmEmailAsync(ApplicationUser user, string code);
 
+        Task AddRoleWithEmailUserAsync(AddRoleWithEmailUserDTO addRoleWithEmailUserDTO);
+
+        Task<bool> CheckUserWithEmailAsync(CheckUserWithEmailDTO checkUserWithEmailDTO);
+
+        Task<IList<string>> GetRolesWithEmailAsync(string email);
+
         Task SignOutAsync();
     }
 }

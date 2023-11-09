@@ -2,6 +2,8 @@
 {
     public class UpdateProductModel
     {
+        private string EmailUser { get; set; }
+
         public long ProductId { get; set; }
 
         public string Name { get; set; }

@@ -25,6 +25,9 @@ namespace NodinSoftProject.Application.Services
             {
                 UserName = registerUserDTO.UserName,
                 Email = registerUserDTO.Email,
+                FirstName = registerUserDTO.FirstName,
+                LastName = registerUserDTO.LastName,
+                EmailConfirmed = true
             };
             var IdentityResult = await _userManager.CreateAsync(user, registerUserDTO.Password);
             return IdentityResult;
@@ -114,6 +117,23 @@ namespace NodinSoftProject.Application.Services
 
         }
 
+        public async Task AddRoleWithEmailUserAsync(AddRoleWithEmailUserDTO addRoleWithEmailUserDTO)
+        {
+            var user = await GetUserWithEmailAsync(addRoleWithEmailUserDTO.EmailUser);
+            await _userManager.AddToRoleAsync(user, addRoleWithEmailUserDTO.Role);
+        }
+
+        public async Task<bool> CheckUserWithEmailAsync(CheckUserWithEmailDTO checkUserWithEmailDTO)
+        {
+            var user = await GetUserWithEmailAsync(checkUserWithEmailDTO.Email);
+            return await _userManager.CheckPasswordAsync(user, checkUserWithEmailDTO.Password);
+        }
+
+        public async Task<IList<string>> GetRolesWithEmailAsync(string email)
+        {
+            var user = await _userManager.GetRolesAsync(email);
+            return user;
+        }
 
 
         public async Task SignOutAsync()

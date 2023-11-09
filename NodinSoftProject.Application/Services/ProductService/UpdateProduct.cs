@@ -12,6 +12,9 @@ namespace NodinSoftProject.Application.Services.ProductService
 
         public class Command : IRequest<Response>
         {
+
+            public string EmailUser { get; set; }
+
             public long ProductId { get; set; }
 
             public string Name { get; set; }

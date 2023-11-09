@@ -13,7 +13,7 @@ namespace NodinSoftProject.Application.Services.ProductService
 
         public class Query : IRequest<Response>
         {
-            public string UserId { get; set; }
+            public string EmailUser { get; set; }
 
         }
 
@@ -34,7 +34,7 @@ namespace NodinSoftProject.Application.Services.ProductService
 
             public async Task<Response> Handle(Query request, CancellationToken cancellationToken)
             {
-                var products = _productRepository.GetQuery().Include("User").Where(p => (p.User.Id == request.UserId)).ToList();
+                var products = _productRepository.GetQuery().Include("User").Where(p => (p.User.Email == request.EmailUser)).ToList();
                 if (products != null)
                 {
                     return new Response()

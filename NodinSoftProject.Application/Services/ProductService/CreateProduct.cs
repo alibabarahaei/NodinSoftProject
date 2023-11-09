@@ -12,7 +12,7 @@ namespace NodinSoftProject.Application.Services.ProductService
 
         public class Command:IRequest<Response>
         {
-            public string UserId { get; set; }
+            public string EmailUser { get; set; }
 
             public string Name { get; set; }
 
@@ -40,7 +40,7 @@ namespace NodinSoftProject.Application.Services.ProductService
             public async Task<Response> Handle(Command request, CancellationToken cancellationToken)
             {
                 var newProduct = ObjectMapper.Mapper.Map<Product>(request);
-                var user = await _userService.GetUserWithUserIdAsync(request.UserId);
+                var user = await _userService.GetUserWithEmailAsync(request.EmailUser);
                 newProduct.User = user;
                 await _productRepository.AddEntity(newProduct);
                 await _productRepository.SaveChanges();
