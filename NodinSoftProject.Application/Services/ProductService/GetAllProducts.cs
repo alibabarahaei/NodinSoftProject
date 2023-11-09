@@ -37,21 +37,21 @@ namespace NodinSoftProject.Application.Services.ProductService
                     return new Response()
                     {
                         Products = products,
-                        ProductResult = ProductResult.Success
+                        OperationResult = OperationResult.Success
                     };
                 }
 
                 return new Response()
                 {
                     Products = null,
-                    ProductResult = ProductResult.Error
+                    OperationResult = OperationResult.Error
                 };
             }
         }
 
         public class Response
         {
-            public ProductResult ProductResult { get; set; }
+            public OperationResult OperationResult { get; set; }
             public List<Product> Products { get; set; }
 
         }

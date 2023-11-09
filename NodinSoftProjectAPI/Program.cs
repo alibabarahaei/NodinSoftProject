@@ -10,6 +10,7 @@ using NodinSoftProject.Domain.Models.User;
 using NodinSoftProject.Infrastructure.EFcore.Context;
 using NodinSoftProject.Infrastructure.EFcore.Repository;
 using NodinSoftProjectAPI.Models;
+using System.Reflection;
 using System.Text;
 using Westwind.AspNetCore.LiveReload;
 
@@ -29,7 +30,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
 
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
@@ -39,7 +40,7 @@ builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IProductService, ProductService>();
+
 #endregion
 
 

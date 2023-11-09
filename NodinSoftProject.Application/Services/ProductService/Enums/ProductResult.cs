@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace NodinSoftProject.Application.Services.ProductService.Enums
 {
-    public enum ProductResult
+    public enum OperationResult
     {
         Success,
         Error

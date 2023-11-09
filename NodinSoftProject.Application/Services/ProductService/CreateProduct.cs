@@ -1,7 +1,7 @@
 ﻿using MediatR;
-using NodinSoftProject.Application.DTOs.Product;
 using NodinSoftProject.Application.InterfaceService;
 using NodinSoftProject.Application.Mapper;
+using NodinSoftProject.Application.Services.ProductService.Enums;
 using NodinSoftProject.Domain.InterfaceRepositories.Base;
 using NodinSoftProject.Domain.Models.Products;
 
@@ -46,14 +46,14 @@ namespace NodinSoftProject.Application.Services.ProductService
                 await _productRepository.SaveChanges();
                 return new Response()
                 {
-                    ProductResult = ProductResult.Success
+                    OperationResult = OperationResult.Success
                 };
             }
         }
 
         public class Response
         {
-            public ProductResult ProductResult { get; set; }
+            public OperationResult OperationResult { get; set; }
 
         }
 

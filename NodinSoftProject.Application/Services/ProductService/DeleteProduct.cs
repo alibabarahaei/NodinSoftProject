@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using NodinSoftProject.Application.DTOs.Product;
 using NodinSoftProject.Application.InterfaceService;
 using NodinSoftProject.Application.Mapper;
+using NodinSoftProject.Application.Services.ProductService.Enums;
 using NodinSoftProject.Domain.InterfaceRepositories.Base;
 using NodinSoftProject.Domain.Models.Products;
 
@@ -45,12 +46,12 @@ namespace NodinSoftProject.Application.Services.ProductService
                 {
                     product.IsAvailable = false;
                     var result = await _mediator.Send(ObjectMapper.Mapper.Map<UpdateProduct.Command>(product));
-                    if (result.ProductResult == ProductResult.Success)
+                    if (result.OperationResult == OperationResult.Success)
                     {
                         await _productRepository.SaveChanges();
                         return new Response()
                         {
-                            ProductResult = ProductResult.Success
+                            OperationResult = OperationResult.Success
                         };
 
                     }
@@ -58,14 +59,14 @@ namespace NodinSoftProject.Application.Services.ProductService
 
                 return new Response()
                 {
-                    ProductResult = ProductResult.Error
+                    OperationResult = OperationResult.Error
                 };
             }
         }
 
         public class Response
         {
-            public ProductResult ProductResult { get; set; }
+            public OperationResult OperationResult { get; set; }
 
         }
 
