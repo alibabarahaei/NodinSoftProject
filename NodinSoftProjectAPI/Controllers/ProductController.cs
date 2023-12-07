@@ -53,6 +53,7 @@ namespace NodinSoftProjectAPI.Controllers
             try
             {
                 var result = await _mediator.Send(new GetAllProducts.Query());
+                result.Products.ToList();
                 return Ok(result);
             }
             catch (Exception e)
@@ -105,7 +106,7 @@ namespace NodinSoftProjectAPI.Controllers
 
                     if (result.OperationResult == OperationResult.Success)
                     {
-                        return Ok(result.Products[0]);
+                        return Ok(result.Products.ToList());
                     }
 
                     return Ok(result.OperationResult);

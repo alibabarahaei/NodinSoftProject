@@ -1,8 +1,10 @@
 ﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 using NodinSoftProject.Application.InterfaceService;
 using NodinSoftProject.Application.Services.ProductService.Enums;
 using NodinSoftProject.Domain.InterfaceRepositories.Base;
 using NodinSoftProject.Domain.Models.Products;
+using NodinSoftProject.Domain.Models.ProductUser;
 
 namespace NodinSoftProject.Application.Services.ProductService
 {
@@ -34,24 +36,31 @@ namespace NodinSoftProject.Application.Services.ProductService
 
             private readonly IUserService _userService;
             private readonly IGenericRepository<Product> _productRepository;
+            private readonly IGenericRepository<ProductUser> _productUserRepository;
 
-            public Handler(IUserService userService, IGenericRepository<Product> productRepository)
+            public Handler(IUserService userService, IGenericRepository<Product> productRepository, IGenericRepository<ProductUser> productUserRepository)
             {
                 _userService = userService;
                 _productRepository = productRepository;
+                _productUserRepository = productUserRepository;
             }
-
 
             public async Task<Response> Handle(Command request, CancellationToken cancellationToken)
             {
-                var currentProduct = await _productRepository.GetEntityById(request.ProductId);
-                if (currentProduct != null)
+
+                var productUsers = _productUserRepository.GetQuery().Include("Product")
+                    .FirstOrDefault(pu => pu.User.Email == request.EmailUser && pu.Product.IsAvailable == true && pu.EditAccess == true&& pu.Product.Id==request.ProductId);
+
+
+
+              
+                if (productUsers != null)
                 {
-                    currentProduct.Name = request.ProductName;
-                    currentProduct.ManufacturePhone = request.ManufacturePhone;
-                    currentProduct.ManufactureEmail = request.ManufactureEmail;
-                    currentProduct.IsAvailable = request.IsAvailable;
-                    _productRepository.EditEntity(currentProduct);
+                    productUsers.Product.Name = request.ProductName;
+                    productUsers.Product.ManufacturePhone = request.ManufacturePhone;
+                    productUsers.Product.ManufactureEmail = request.ManufactureEmail;
+                    productUsers.Product.IsAvailable = request.IsAvailable;
+                    _productRepository.EditEntity(productUsers.Product);
                     await _productRepository.SaveChanges();
                     return new Response()
                     {
