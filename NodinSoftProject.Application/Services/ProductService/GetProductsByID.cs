@@ -34,21 +34,23 @@ namespace NodinSoftProject.Application.Services.ProductService
 
             public async Task<Response> Handle(Query request, CancellationToken cancellationToken)
             {
-                var products = _productRepository.GetQuery().Where(p => (p.User.Email == request.EmailUser&&p.IsAvailable==true)).ToList();
-                if (products != null)
-                {
-                    return new Response()
-                    {
-                        Products = products,
-                        OperationResult = OperationResult.Success
-                    };
-                }
+                //TODO
+                //var products = _productRepository.GetQuery().Where(p => (p.User.Email == request.EmailUser&&p.IsAvailable==true)).ToList();
+                //if (products != null)
+                //{
+                //    return new Response()
+                //    {
+                //        Products = products,
+                //        OperationResult = OperationResult.Success
+                //    };
+                //}
 
-                return new Response()
-                {
-                    Products = null,
-                    OperationResult = OperationResult.Error
-                };
+                //return new Response()
+                //{
+                //    Products = null,
+                //    OperationResult = OperationResult.Error
+                //};
+            return new Response();
             }
         }
 

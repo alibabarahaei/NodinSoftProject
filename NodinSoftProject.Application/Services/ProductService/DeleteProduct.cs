@@ -39,31 +39,33 @@ namespace NodinSoftProject.Application.Services.ProductService
 
             public async Task<Response> Handle(Command request, CancellationToken cancellationToken)
             {
-                var product = await _productRepository.GetQuery().Include(p => p.User).FirstOrDefaultAsync(p=>p.IsAvailable==true);
+                //TODO
+                //var product = await _productRepository.GetQuery().Include(p => p.User).FirstOrDefaultAsync(p=>p.IsAvailable==true);
 
-                if (product != null && product.User.Email == request.EmailUser)
-                {
-                    product.IsAvailable = false;
-                    var updateProductCommand = ObjectMapper.Mapper.Map<UpdateProduct.Command>(product);
-                    updateProductCommand.ProductName = product.Name;
-                    updateProductCommand.EmailUser = request.EmailUser;
-                    updateProductCommand.ProductId= request.ProductId;
-                    var result = await _mediator.Send(updateProductCommand);
-                    if (result.OperationResult == OperationResult.Success)
-                    {
-                        await _productRepository.SaveChanges();
-                        return new Response()
-                        {
-                            OperationResult = OperationResult.Success
-                        };
+                //if (product != null && product.User.Email == request.EmailUser)
+                //{
+                //    product.IsAvailable = false;
+                //    var updateProductCommand = ObjectMapper.Mapper.Map<UpdateProduct.Command>(product);
+                //    updateProductCommand.ProductName = product.Name;
+                //    updateProductCommand.EmailUser = request.EmailUser;
+                //    updateProductCommand.ProductId= request.ProductId;
+                //    var result = await _mediator.Send(updateProductCommand);
+                //    if (result.OperationResult == OperationResult.Success)
+                //    {
+                //        await _productRepository.SaveChanges();
+                //        return new Response()
+                //        {
+                //            OperationResult = OperationResult.Success
+                //        };
 
-                    }
-                }
+                //    }
+                //}
 
-                return new Response()
-                {
-                    OperationResult = OperationResult.Error
-                };
+                //return new Response()
+                //{
+                //    OperationResult = OperationResult.Error
+                //};
+                return new Response();
             }
         }
 

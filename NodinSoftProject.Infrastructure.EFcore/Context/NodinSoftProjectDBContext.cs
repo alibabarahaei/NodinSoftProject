@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using NodinSoftProject.Domain.Models.Products;
+using NodinSoftProject.Domain.Models.ProductUser;
 using NodinSoftProject.Domain.Models.User;
 
 namespace NodinSoftProject.Infrastructure.EFcore.Context
@@ -14,6 +15,7 @@ namespace NodinSoftProject.Infrastructure.EFcore.Context
 
 
         public DbSet<Product> Products { get; set; }
+        public DbSet<ProductUser> ProductUsers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -28,8 +30,16 @@ namespace NodinSoftProject.Infrastructure.EFcore.Context
             modelBuilder.ApplyConfiguration(new RoleConfiguration());
             modelBuilder.Entity<IdentityUserRole<string>>().HasKey(p => new { p.UserId, p.RoleId });
 
-
-
+            modelBuilder.Entity<ProductUser>()
+                .HasKey(bc => new { bc.ProductId, bc.UserId });
+            modelBuilder.Entity<ProductUser>()
+                .HasOne(bc => bc.Product)
+                .WithMany(b => b.UserProducts)
+                .HasForeignKey(bc => bc.ProductId);
+            modelBuilder.Entity<ProductUser>()
+                .HasOne(bc => bc.User)
+                .WithMany(c => c.UserProducts)
+                .HasForeignKey(bc => bc.UserId);
             #region ChangeTableName(Identity)
             modelBuilder.Entity<ApplicationUser>().ToTable("Users").Property(p => p.Id).HasColumnName("UserId");
             modelBuilder.Entity<IdentityUserRole<string>>().ToTable("UserRoles");

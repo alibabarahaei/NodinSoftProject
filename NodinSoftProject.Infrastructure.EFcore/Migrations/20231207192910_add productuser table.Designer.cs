@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NodinSoftProject.Infrastructure.EFcore.Context;
 
@@ -11,9 +12,11 @@ using NodinSoftProject.Infrastructure.EFcore.Context;
 namespace NodinSoftProject.Infrastructure.EFcore.Migrations
 {
     [DbContext(typeof(NodinSoftProjectDBContext))]
-    partial class NodinSoftProjectDBContextModelSnapshot : ModelSnapshot
+    [Migration("20231207192910_add productuser table")]
+    partial class addproductusertable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,13 +54,13 @@ namespace NodinSoftProject.Infrastructure.EFcore.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "2bd6a4e8-1268-4822-8cc9-e9024f1ae640",
+                            Id = "25700ddf-f024-4c6c-a874-2f417e256ebd",
                             Name = "Visitor",
                             NormalizedName = "VISITOR"
                         },
                         new
                         {
-                            Id = "dba935fc-278e-4de0-9eec-f7a91a96d28e",
+                            Id = "bbe77424-2910-48a9-960a-9d718a54862f",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         });
@@ -176,15 +179,6 @@ namespace NodinSoftProject.Infrastructure.EFcore.Migrations
 
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<bool>("DeleteAccess")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("EditAccess")
-                        .HasColumnType("bit");
-
-                    b.Property<long>("Id")
-                        .HasColumnType("bigint");
 
                     b.HasKey("ProductId", "UserId");
 

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NodinSoftProject.Infrastructure.EFcore.Context;
 
@@ -11,9 +12,11 @@ using NodinSoftProject.Infrastructure.EFcore.Context;
 namespace NodinSoftProject.Infrastructure.EFcore.Migrations
 {
     [DbContext(typeof(NodinSoftProjectDBContext))]
-    partial class NodinSoftProjectDBContextModelSnapshot : ModelSnapshot
+    [Migration("20231207193252_update productuser table")]
+    partial class updateproductusertable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

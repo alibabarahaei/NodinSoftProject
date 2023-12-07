@@ -22,7 +22,7 @@ namespace NodinSoftProject.Domain.Models.User
         #region relations
 
 
-        public ICollection<Product> Products { get; set; }
+        public ICollection<ProductUser.ProductUser> UserProducts { get; set; }
 
         #endregion
 
