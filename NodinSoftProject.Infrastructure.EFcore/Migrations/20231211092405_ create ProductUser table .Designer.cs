@@ -12,8 +12,8 @@ using NodinSoftProject.Infrastructure.EFcore.Context;
 namespace NodinSoftProject.Infrastructure.EFcore.Migrations
 {
     [DbContext(typeof(NodinSoftProjectDBContext))]
-    [Migration("20231207192910_add productuser table")]
-    partial class addproductusertable
+    [Migration("20231211092405_ create ProductUser table ")]
+    partial class createProductUsertable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -54,13 +54,13 @@ namespace NodinSoftProject.Infrastructure.EFcore.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "25700ddf-f024-4c6c-a874-2f417e256ebd",
+                            Id = "2949f388-2a12-4e80-b284-8e86043cca0c",
                             Name = "Visitor",
                             NormalizedName = "VISITOR"
                         },
                         new
                         {
-                            Id = "bbe77424-2910-48a9-960a-9d718a54862f",
+                            Id = "2206a523-491a-491e-8a16-a1e3a8832941",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         });
@@ -174,13 +174,28 @@ namespace NodinSoftProject.Infrastructure.EFcore.Migrations
 
             modelBuilder.Entity("NodinSoftProject.Domain.Models.ProductUser.ProductUser", b =>
                 {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<bool>("DeleteAccess")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("EditAccess")
+                        .HasColumnType("bit");
+
                     b.Property<long>("ProductId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("UserId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("ProductId", "UserId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
 
                     b.HasIndex("UserId");
 

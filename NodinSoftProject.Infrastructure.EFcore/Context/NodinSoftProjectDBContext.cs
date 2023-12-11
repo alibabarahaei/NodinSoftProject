@@ -31,7 +31,7 @@ namespace NodinSoftProject.Infrastructure.EFcore.Context
             modelBuilder.Entity<IdentityUserRole<string>>().HasKey(p => new { p.UserId, p.RoleId });
 
             modelBuilder.Entity<ProductUser>()
-                .HasKey(bc => new { bc.ProductId, bc.UserId });
+                .HasKey(bc => new { bc.Id });
             modelBuilder.Entity<ProductUser>()
                 .HasOne(bc => bc.Product)
                 .WithMany(b => b.UserProducts)

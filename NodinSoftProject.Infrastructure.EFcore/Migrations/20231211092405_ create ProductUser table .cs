@@ -7,7 +7,7 @@
 namespace NodinSoftProject.Infrastructure.EFcore.Migrations
 {
     /// <inheritdoc />
-    public partial class addproductusertable : Migration
+    public partial class createProductUsertable : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -38,12 +38,16 @@ namespace NodinSoftProject.Infrastructure.EFcore.Migrations
                 name: "ProductUsers",
                 columns: table => new
                 {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     ProductId = table.Column<long>(type: "bigint", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    EditAccess = table.Column<bool>(type: "bit", nullable: false),
+                    DeleteAccess = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProductUsers", x => new { x.ProductId, x.UserId });
+                    table.PrimaryKey("PK_ProductUsers", x => x.Id);
                     table.ForeignKey(
                         name: "FK_ProductUsers_Products_ProductId",
                         column: x => x.ProductId,
@@ -63,9 +67,14 @@ namespace NodinSoftProject.Infrastructure.EFcore.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "25700ddf-f024-4c6c-a874-2f417e256ebd", null, "Visitor", "VISITOR" },
-                    { "bbe77424-2910-48a9-960a-9d718a54862f", null, "Administrator", "ADMINISTRATOR" }
+                    { "2206a523-491a-491e-8a16-a1e3a8832941", null, "Administrator", "ADMINISTRATOR" },
+                    { "2949f388-2a12-4e80-b284-8e86043cca0c", null, "Visitor", "VISITOR" }
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductUsers_ProductId",
+                table: "ProductUsers",
+                column: "ProductId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProductUsers_UserId",
@@ -82,12 +91,12 @@ namespace NodinSoftProject.Infrastructure.EFcore.Migrations
             migrationBuilder.DeleteData(
                 table: "Roles",
                 keyColumn: "Id",
-                keyValue: "25700ddf-f024-4c6c-a874-2f417e256ebd");
+                keyValue: "2206a523-491a-491e-8a16-a1e3a8832941");
 
             migrationBuilder.DeleteData(
                 table: "Roles",
                 keyColumn: "Id",
-                keyValue: "bbe77424-2910-48a9-960a-9d718a54862f");
+                keyValue: "2949f388-2a12-4e80-b284-8e86043cca0c");
 
             migrationBuilder.AddColumn<string>(
                 name: "UserId",

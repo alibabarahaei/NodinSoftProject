@@ -51,13 +51,13 @@ namespace NodinSoftProject.Infrastructure.EFcore.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "2bd6a4e8-1268-4822-8cc9-e9024f1ae640",
+                            Id = "2949f388-2a12-4e80-b284-8e86043cca0c",
                             Name = "Visitor",
                             NormalizedName = "VISITOR"
                         },
                         new
                         {
-                            Id = "dba935fc-278e-4de0-9eec-f7a91a96d28e",
+                            Id = "2206a523-491a-491e-8a16-a1e3a8832941",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         });
@@ -171,11 +171,11 @@ namespace NodinSoftProject.Infrastructure.EFcore.Migrations
 
             modelBuilder.Entity("NodinSoftProject.Domain.Models.ProductUser.ProductUser", b =>
                 {
-                    b.Property<long>("ProductId")
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<bool>("DeleteAccess")
                         .HasColumnType("bit");
@@ -183,10 +183,16 @@ namespace NodinSoftProject.Infrastructure.EFcore.Migrations
                     b.Property<bool>("EditAccess")
                         .HasColumnType("bit");
 
-                    b.Property<long>("Id")
+                    b.Property<long>("ProductId")
                         .HasColumnType("bigint");
 
-                    b.HasKey("ProductId", "UserId");
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
 
                     b.HasIndex("UserId");
 
