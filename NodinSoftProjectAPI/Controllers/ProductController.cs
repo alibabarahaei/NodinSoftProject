@@ -142,5 +142,34 @@ namespace NodinSoftProjectAPI.Controllers
             }
             return Unauthorized();
         }
+
+
+
+
+
+        [HttpPost("AddDeletePermission")]
+        public async Task<IActionResult> AddDeletePermission(AddDeletePermissionModel addDeletePermissionModel)
+        {
+            if (User.GetEmail() != null)
+            {
+                try
+                {
+                    var addDeletePermissionToUser = _mapper.Map<AddDeletePermissionToUser.Command>(addDeletePermissionModel);
+                    //addDeletePermissionToUser.IsDeletePermission = (addDeletePermissionToUser.IsDeletePermission != 0);
+                    addDeletePermissionToUser.OwnerEmailProduct = User.GetEmail();
+                    var result = await _mediator.Send(addDeletePermissionToUser);
+                    return Ok(result);
+                }
+                catch (Exception e)
+                {
+                    return NotFound();
+                }
+            }
+
+            return Unauthorized();
+        }
+
+
+
     }
 }
