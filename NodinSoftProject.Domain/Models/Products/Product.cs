@@ -33,7 +33,7 @@ namespace NodinSoftProject.Domain.Models.Products
         #region relations
 
 
-        //public ApplicationUser User { get; set; }
+        public ApplicationUser User { get; set; }
 
         public ICollection<ProductUser.ProductUser> UserProducts { get; set; }
 

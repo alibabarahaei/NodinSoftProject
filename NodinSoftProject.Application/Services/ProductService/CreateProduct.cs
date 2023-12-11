@@ -47,6 +47,7 @@ namespace NodinSoftProject.Application.Services.ProductService
                 var newProduct = ObjectMapper.Mapper.Map<Product>(request);
                 newProduct.Name = request.ProductName;
                 var user = await _userService.GetUserWithEmailAsync(request.EmailUser);
+                newProduct.User = user;
                 await _productRepository.AddEntity(newProduct);
                 await _productRepository.SaveChanges();
                 var result = await _mediator.Send(new GetAllProducts.Query());

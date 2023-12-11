@@ -44,7 +44,7 @@ namespace NodinSoftProject.Application.Services.ProductService
             {
 
                 var productUsers = _productUserRepository.GetQuery().Include("Product")
-                    .FirstOrDefault(pu => pu.User.Email == request.EmailUser && pu.Product.IsAvailable == true&&pu.DeleteAccess==true);
+                    .FirstOrDefault(pu => pu.User.Email == request.EmailUser && pu.Product.IsAvailable == true&&pu.DeleteAccess==true&&pu.ProductId==request.ProductId);
                     
 
                

@@ -5,6 +5,7 @@ using NodinSoftProject.Domain.InterfaceRepositories.Base;
 using NodinSoftProject.Domain.Models.Products;
 using NodinSoftProject.Domain.Models.ProductUser;
 using System;
+using System.ComponentModel.Design;
 using Microsoft.EntityFrameworkCore;
 using NodinSoftProject.Application.Mapper;
 
@@ -48,39 +49,53 @@ namespace NodinSoftProject.Application.Services.ProductService
 
                 try
                 {
+
+
+                    var product = await _productRepository.GetQuery().Include("User").FirstOrDefaultAsync(p=>p.Id==request.ProductId);
+                    var user = await _userService.GetUserWithEmailAsync(request.UserEmail);
                     var productUser = await _productUserRepository.GetQuery()
                         .FirstOrDefaultAsync(pu => pu.User.Email == request.UserEmail && pu.ProductId == request.ProductId);
-                    if (productUser != null)
-                    {
-                        productUser.DeleteAccess = request.IsDeletePermission;
-                        _productUserRepository.EditEntity(productUser);
-                    }
-                    else
-                    {
 
-                        var user = await _userService.GetUserWithEmailAsync(request.UserEmail);
-                        var product = await _productRepository.GetEntityById(request.ProductId);
-                        if (user != null && product != null)
+
+
+
+
+                    if (product!=null&&product.User.Email == request.OwnerEmailProduct)
+                    {
+                        if (productUser != null)
                         {
-                            var newProductUser = new ProductUser()
-                            {
-                                ProductId = request.ProductId,
-                                UserId = user.Id,
-                                DeleteAccess = request.IsDeletePermission,
-                                EditAccess = false
-                            };
-                            await _productUserRepository.AddEntity(newProductUser);
-
+                            productUser.DeleteAccess = request.IsDeletePermission;
+                            _productUserRepository.EditEntity(productUser);
                         }
                         else
                         {
-                            return new Response()
+                            if (user != null )
                             {
-                                OperationResult = OperationResult.Error
-                            };
+                                var newProductUser = new ProductUser()
+                                {
+                                    ProductId = request.ProductId,
+                                    UserId = user.Id,
+                                    DeleteAccess = request.IsDeletePermission,
+                                    EditAccess = false
+                                };
+                                await _productUserRepository.AddEntity(newProductUser);
+                                await _productUserRepository.SaveChanges();
+                            }
+                            else
+                            {
+                                return new Response()
+                                {
+                                    OperationResult = OperationResult.Error
+                                };
+                            }
                         }
-
-
+                    }
+                    else
+                    {
+                        return new Response()
+                        {
+                            OperationResult = OperationResult.Error
+                        };
                     }
 
                 }
