@@ -4,7 +4,9 @@ namespace NodinSoftProjectAPI.Models
 {
     public class UserLoginModel
     {
-        [Required] public string Email { get; set; }
+        [Required(ErrorMessage = "ایمیل را وارد کنید")]
+        [EmailAddress]
+        public string Email { get; set; }
         [Required]
         [DataType(DataType.Password)]
         public string Password { get; set; }

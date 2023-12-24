@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NodinSoftProject.Domain", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NodinSoftProject.Infrastructure.EFcore", "NodinSoftProject.Infrastructure.EFcore\NodinSoftProject.Infrastructure.EFcore.csproj", "{28425D3E-98A9-4B07-AF23-271058570933}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NodinSoftProject.Tests", "NodinSoftProject.Test\NodinSoftProject.Tests.csproj", "{A33D55BB-C017-4573-A991-7C5611636A22}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NodinSoftProject.Tests", "NodinSoftProject.Test\NodinSoftProject.Tests.csproj", "{A33D55BB-C017-4573-A991-7C5611636A22}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{F1466549-4711-482A-92AD-CB200816C9E4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{A33D55BB-C017-4573-A991-7C5611636A22}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A33D55BB-C017-4573-A991-7C5611636A22}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A33D55BB-C017-4573-A991-7C5611636A22}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F1466549-4711-482A-92AD-CB200816C9E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1466549-4711-482A-92AD-CB200816C9E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1466549-4711-482A-92AD-CB200816C9E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1466549-4711-482A-92AD-CB200816C9E4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

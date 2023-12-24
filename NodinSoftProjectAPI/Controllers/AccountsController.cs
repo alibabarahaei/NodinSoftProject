@@ -30,42 +30,53 @@ namespace NodinSoftProjectAPI.Controllers
         [HttpPost("Register")]
         public async Task<ActionResult> Register(UserRegistrationModel userModel)
         {
-            var user = _mapper.Map<ApplicationUser>(userModel);
-            user.EmailConfirmed = true;
-            var registerUserDTO = _mapper.Map<RegisterUserDTO>(userModel);
-            var result = await _userService.RegisterUserAsync(registerUserDTO);
-            if (!result.Succeeded)
+            if (ModelState.IsValid)
             {
-                return Ok(result.Errors);
-            }
-            await _userService.AddRoleWithEmailUserAsync(new AddRoleWithEmailUserDTO()
-            {
-                EmailUser = userModel.Email,
-                Role = "AuthorizedUser"
-            });
+                
+                var user = _mapper.Map<ApplicationUser>(userModel);
+                user.EmailConfirmed = true;
+                var registerUserDTO = _mapper.Map<RegisterUserDTO>(userModel);
+                var result = await _userService.RegisterUserAsync(registerUserDTO);
+                if (!result.Succeeded)
+                {
+                    return BadRequest(result.Errors);
+                }
+                await _userService.AddRoleWithEmailUserAsync(new AddRoleWithEmailUserDTO()
+                {
+                    EmailUser = userModel.Email,
+                    Role = "AuthorizedUser"
+                });
 
-            return StatusCode(201);
+                return Ok("Your registration is successful");
+            }
+
+            return BadRequest(ModelState);
         }
 
         [HttpPost("Login")]
         public async Task<IActionResult> Login(UserLoginModel userModel)
         {
-            var user = await _userService.GetUserWithEmailAsync(userModel.Email);
-            var checkUserWithEmailDTO = new CheckUserWithEmailDTO()
+            if (ModelState.IsValid)
             {
-                Email = userModel.Email,
-                Password = userModel.Password
-            };
-            if (user != null && await _userService.CheckUserWithEmailAsync(checkUserWithEmailDTO))
-            {
-                var signingCredentials = GetSigningCredentials();
-                var claims = GetClaims(user);
-                var tokenOptions = GenerateTokenOptions(signingCredentials, await claims);
-                var token = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
-                return Ok(token);
-            }
-            return Unauthorized("Invalid Authentication");
+                var user = await _userService.GetUserWithEmailAsync(userModel.Email);
+                var checkUserWithEmailDTO = new CheckUserWithEmailDTO()
+                {
+                    Email = userModel.Email,
+                    Password = userModel.Password
+                };
+                if (user != null && await _userService.CheckUserWithEmailAsync(checkUserWithEmailDTO))
+                {
+                    var signingCredentials = GetSigningCredentials();
+                    var claims = GetClaims(user);
+                    var tokenOptions = GenerateTokenOptions(signingCredentials, await claims);
+                    var token = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
+                    return Ok(token);
+                }
 
+                return Unauthorized("Invalid Authentication");
+            }
+
+            return BadRequest(ModelState);
         }
 
         private SigningCredentials GetSigningCredentials()

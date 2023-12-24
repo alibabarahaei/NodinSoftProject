@@ -57,7 +57,7 @@ namespace NodinSoftProject.Application.Services.ProductService
                 return new Response()
                 {
                     Products = null,
-                    OperationResult = OperationResult.Error
+                    OperationResult = OperationResult.Success
                 };
           
             }

@@ -48,7 +48,7 @@ namespace NodinSoftProject.Application.Services.ProductService
             public async Task<Response> Handle(Command request, CancellationToken cancellationToken)
             {
 
-                var productUsers = _productUserRepository.GetQuery().Include("Product")
+                var productUsers = _productUserRepository.GetQuery().Include("Product").Include("User")
                     .FirstOrDefault(pu => pu.User.Email == request.EmailUser && pu.Product.IsAvailable == true && pu.EditAccess == true&& pu.Product.Id==request.ProductId);
 
 

@@ -27,22 +27,27 @@ namespace NodinSoftProjectAPI.Controllers
         [HttpPost("CreateProduct")]
         public async Task<IActionResult> CreateProduct(CreateProductModel createProductModel)
         {
-            if (User.GetEmail() != null)
+            if (ModelState.IsValid)
             {
-                try
+                if (User.GetEmail() != null)
                 {
-                    var prouct = _mapper.Map<CreateProduct.Command>(createProductModel);
-                    prouct.EmailUser = User.GetEmail();
-                    var result = await _mediator.Send(prouct);
-                    return Ok(result);
+                    try
+                    {
+                        var prouct = _mapper.Map<CreateProduct.Command>(createProductModel);
+                        prouct.EmailUser = User.GetEmail();
+                        var result = await _mediator.Send(prouct);
+                        return Ok(result);
+                    }
+                    catch (Exception e)
+                    {
+                        return NotFound();
+                    }
                 }
-                catch (Exception e)
-                {
-                    return NotFound();
-                }
+
+                return Unauthorized("please login and then use JWT token");
             }
 
-            return Unauthorized();
+            return BadRequest(ModelState);
         }
 
 
@@ -58,7 +63,7 @@ namespace NodinSoftProjectAPI.Controllers
             }
             catch (Exception e)
             {
-                return NotFound();
+                return NotFound("Not find any product");
             }
         }
 
@@ -71,22 +76,27 @@ namespace NodinSoftProjectAPI.Controllers
         [HttpDelete("DeleteProduct")]
         public async Task<IActionResult> DeleteProduct(DeleteProductModel deleteProductModel)
         {
-            if (User.GetEmail() != null)
+            if (ModelState.IsValid)
             {
-                try
+                if (User.GetEmail() != null)
                 {
-                    var deleteProductCommand = _mapper.Map<DeleteProduct.Command>(deleteProductModel);
-                    deleteProductCommand.EmailUser = User.GetEmail();
-                    var result = await _mediator.Send(deleteProductCommand);
-                    return Ok(result);
+                    try
+                    {
+                        var deleteProductCommand = _mapper.Map<DeleteProduct.Command>(deleteProductModel);
+                        deleteProductCommand.EmailUser = User.GetEmail();
+                        var result = await _mediator.Send(deleteProductCommand);
+                        return Ok(result);
+                    }
+                    catch (Exception e)
+                    {
+                        return NotFound("Not find any product with this information" );
+                    }
                 }
-                catch (Exception e)
-                {
-                    return NotFound();
-                }
+
+                return Unauthorized("please login and then use JWT token");
             }
 
-            return Unauthorized();
+            return BadRequest(ModelState);
         }
 
 
@@ -113,11 +123,11 @@ namespace NodinSoftProjectAPI.Controllers
                 }
                 catch (Exception e)
                 {
-                    return NotFound();
+                    return NotFound("Not find any product");
                 }
             }
 
-            return Unauthorized();
+            return Unauthorized("please login and then use JWT token");
         }
 
 
@@ -126,21 +136,26 @@ namespace NodinSoftProjectAPI.Controllers
         [HttpPatch("UpdateProduct")]
         public async Task<IActionResult> UpdateProduct(UpdateProductModel updateProductModel)
         {
-            if (User.GetEmail() != null)
+            if (ModelState.IsValid)
             {
-                try
+                if (User.GetEmail() != null)
                 {
-                    var updateProductCommand = _mapper.Map<UpdateProduct.Command>(updateProductModel);
-                    updateProductCommand.EmailUser = User.GetEmail();
-                    var result = await _mediator.Send(updateProductCommand);
-                    return Ok(result);
+                    try
+                    {
+                        var updateProductCommand = _mapper.Map<UpdateProduct.Command>(updateProductModel);
+                        updateProductCommand.EmailUser = User.GetEmail();
+                        var result = await _mediator.Send(updateProductCommand);
+                        return Ok(result);
+                    }
+                    catch (Exception e)
+                    {
+                        return NotFound("Not find any product with this information");
+                    }
                 }
-                catch (Exception e)
-                {
-                    return NotFound();
-                }
+                return Unauthorized("please login and then use JWT token");
             }
-            return Unauthorized();
+
+            return BadRequest(ModelState);
         }
 
 
@@ -150,23 +165,56 @@ namespace NodinSoftProjectAPI.Controllers
         [HttpPost("AddDeletePermission")]
         public async Task<IActionResult> AddDeletePermission(AddDeletePermissionModel addDeletePermissionModel)
         {
-            if (User.GetEmail() != null)
+            if (ModelState.IsValid)
             {
-                try
+                if (User.GetEmail() != null)
                 {
-                    var addDeletePermissionToUser = _mapper.Map<AddDeletePermissionToUser.Command>(addDeletePermissionModel);
-                    //addDeletePermissionToUser.IsDeletePermission = (addDeletePermissionToUser.IsDeletePermission != 0);
-                    addDeletePermissionToUser.OwnerEmailProduct = User.GetEmail();
-                    var result = await _mediator.Send(addDeletePermissionToUser);
-                    return Ok(result);
+                    try
+                    {
+                        var addDeletePermissionToUser = _mapper.Map<AddDeletePermissionToUser.Command>(addDeletePermissionModel);
+                      
+                        addDeletePermissionToUser.OwnerEmailProduct = User.GetEmail();
+                        var result = await _mediator.Send(addDeletePermissionToUser);
+                        return Ok(result);
+                    }
+                    catch (Exception e)
+                    {
+                        return NotFound("Not find any product with this information");
+                    }
                 }
-                catch (Exception e)
-                {
-                    return NotFound();
-                }
+
+                return Unauthorized("please login and then use JWT token");
             }
 
-            return Unauthorized();
+            return BadRequest(ModelState);
+        }
+
+
+        [HttpPost("AddEditPermission")]
+        public async Task<IActionResult> AddEditPermission(AddEditPermissionModel addEditPermissionModel)
+        {
+            if (ModelState.IsValid)
+            {
+                if (User.GetEmail() != null)
+                {
+                    try
+                    {
+                        var addEditPermissionToUser = _mapper.Map<AddEditPermissionToUser.Command>(addEditPermissionModel);
+
+                        addEditPermissionToUser.OwnerEmailProduct = User.GetEmail();
+                        var result = await _mediator.Send(addEditPermissionToUser);
+                        return Ok(result);
+                    }
+                    catch (Exception e)
+                    {
+                        return NotFound("Not find any product with this information");
+                    }
+                }
+
+                return Unauthorized("please login and then use JWT token");
+            }
+
+            return BadRequest(ModelState);
         }
 
 

@@ -11,7 +11,7 @@ using NodinSoftProject.Application.Mapper;
 
 namespace NodinSoftProject.Application.Services.ProductService
 {
-    public class AddDeletePermissionToUser
+    public class AddEditPermissionToUser
     {
         public class Command : IRequest<Handler.Response>
         {
@@ -19,7 +19,7 @@ namespace NodinSoftProject.Application.Services.ProductService
 
             public long ProductId { get; set; }
 
-            public bool IsDeletePermission { get; set; }
+            public bool IsEditPermission { get; set; }
 
             public string OwnerEmailProduct { get; set; }
 
@@ -64,7 +64,7 @@ namespace NodinSoftProject.Application.Services.ProductService
                     {
                         if (productUser != null)
                         {
-                            productUser.DeleteAccess = request.IsDeletePermission;
+                            productUser.EditAccess = request.IsEditPermission;
                             _productUserRepository.EditEntity(productUser);
                             await _productUserRepository.SaveChanges();
                         }
@@ -76,7 +76,7 @@ namespace NodinSoftProject.Application.Services.ProductService
                                 {
                                     ProductId = request.ProductId,
                                     UserId = user.Id,
-                                    DeleteAccess = request.IsDeletePermission,
+                                    DeleteAccess = request.IsEditPermission,
                                     EditAccess = false
                                 };
                                 await _productUserRepository.AddEntity(newProductUser);

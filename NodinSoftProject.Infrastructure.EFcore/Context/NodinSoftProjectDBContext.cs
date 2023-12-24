@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Storage;
 using NodinSoftProject.Domain.Models.Products;
 using NodinSoftProject.Domain.Models.ProductUser;
 using NodinSoftProject.Domain.Models.User;
@@ -11,6 +13,21 @@ namespace NodinSoftProject.Infrastructure.EFcore.Context
     {
         public NodinSoftProjectDBContext(DbContextOptions<NodinSoftProjectDBContext> options) : base(options)
         {
+            try
+            {
+                var databaseCreator = Database.GetService<IDatabaseCreator>() as RelationalDatabaseCreator;
+                if (databaseCreator != null)
+                {
+                    if (!databaseCreator.CanConnect())
+                        databaseCreator.Create();
+                    if (!databaseCreator.HasTables())
+                        databaseCreator.CreateTables();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
         }
 
 
